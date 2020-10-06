@@ -1,22 +1,20 @@
 const grpc = require('grpc');
-const protoLoader = require('@grpc/proto-loader');
+const health = require('grpc-health-check');
 const config = require('./config/env');
-const analyze = require('./wappalyzer/analyze');
+const analyze = require('./wappalyzer-impl/analyze');
+const proto = require('./proto');
+const waManager = require('./wa-manager');
+const Healthz = require('./healthz');
 
-const packageDefinition = protoLoader.loadSync(
-  './node_modules/scr-proto/proto/wappalyzer/wappalyzer.proto',
-  {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true,
-  },
-);
-const wappalyzerGrpc = grpc.loadPackageDefinition(packageDefinition).wappalyzer;
+waManager.start();
 
 const server = new grpc.Server();
-server.addService(wappalyzerGrpc.Wappalyzer.service, {
+process.on('SIGTERM', server.tryShutdown);
+
+server.addService(health.service, new Healthz());
+server.addService(proto.wappalyzerGrpc.Wappalyzer.service, {
   Analyze: analyze,
 });
+
 server.bind(`0.0.0.0:${config.grpc.port}`, grpc.ServerCredentials.createInsecure());
+server.start();

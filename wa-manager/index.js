@@ -1,19 +1,17 @@
 const randomUseragent = require('random-useragent');
-const pino = require('pino');
 const Wappalyzer = require('wappalyzer');
 
-const logger = pino({
-  prettyPrint: true,
-});
+let started = false;
+let wa = null;
 
-module.exports = async (call, cb) => {
-  try {
+module.exports = {
+  async start() {
     const options = {
       debug: false,
       delay: 500,
       headers: {},
       maxDepth: 3,
-      maxUrls: 10,
+      maxUrls: 3,
       maxWait: 5000,
       recursive: true,
       probe: true,
@@ -22,16 +20,14 @@ module.exports = async (call, cb) => {
       htmlMaxRows: 2000,
     };
 
-    const wa = new Wappalyzer(options);
+    wa = new Wappalyzer(options);
     await wa.init();
-
-    const site = await wa.open(call.request.url, {});
-    const results = await site.analyze();
-
-    const res = new AnalyzeResponse();
-
-  } catch (e) {
-    logger.error(e);
-    cb(e, null);
-  }
+    started = true;
+  },
+  isStarted() {
+    return started;
+  },
+  get() {
+    return wa;
+  },
 };
