@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:experimental
+
 FROM node:12-alpine AS build
 WORKDIR /app
 COPY / /app
