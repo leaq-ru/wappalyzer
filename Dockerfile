@@ -1,7 +1,7 @@
 FROM node:12-alpine AS build
 WORKDIR /app
 COPY / /app
-RUN apk add --no-cache git
+RUN apk add --no-cache git openssh-client
 RUN git config --global url."https://nnqq:$GH_CI_TOKEN@github.com/".insteadOf "https://github.com/"
 RUN npm install --only=production
 
