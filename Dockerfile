@@ -2,7 +2,7 @@ FROM node:12-alpine AS build
 ARG PRIVATE_SSH=$PRIVATE_SSH
 WORKDIR /app
 COPY / /app
-RUN apk add --no-cache git openssh-client chromium
+RUN apk add --no-cache git openssh-client
 RUN mkdir -p -m 0600 /root/.ssh
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 RUN printf "%s" "$PRIVATE_SSH" > /root/.ssh/id_rsa
