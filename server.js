@@ -9,7 +9,9 @@ const Healthz = require('./healthz');
 waManager.start();
 
 const server = new grpc.Server();
-process.on('SIGTERM', server.tryShutdown);
+process.on('SIGTERM', () => {
+  server.tryShutdown(() => {});
+});
 
 server.addService(health.service, new Healthz());
 server.addService(proto.wappalyzerGrpc.Wappalyzer.service, {

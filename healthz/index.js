@@ -1,10 +1,15 @@
 const health = require('grpc-health-check');
 const waManager = require('../wa-manager');
 
+const status = {
+  serving: 1,
+  notServing: 2,
+};
+
 module.exports = class Healthz extends health.Implementation {
   constructor() {
     const statusMap = {
-      '': 'NOT_SERVING',
+      '': status.notServing,
     };
 
     super(statusMap);
@@ -16,7 +21,7 @@ module.exports = class Healthz extends health.Implementation {
   async initLoopCheck() {
     while (!waManager.isStarted()) {
       await new Promise(((resolve) => setTimeout(resolve, 1000)));
-      this.statusMap[''] = waManager.isStarted() ? 'SERVING' : 'NOT_SERVING';
+      this.statusMap[''] = waManager.isStarted() ? status.serving : status.notServing;
     }
   }
 };

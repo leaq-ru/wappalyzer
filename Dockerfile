@@ -15,6 +15,17 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.2 && \
 
 FROM node:12-alpine
 WORKDIR /app
-RUN apk add --no-cache chromium
 COPY --from=build /app /app
 RUN npm rebuild
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    nodejs \
+    yarn
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
