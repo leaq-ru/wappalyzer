@@ -7,4 +7,4 @@ RUN npm install --only=production
 
 FROM node:12-alpine
 WORKDIR /app
-COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app /app
