@@ -19,7 +19,7 @@
     "pino": "^6.7.0",
     "pino-pretty": "^4.2.1",
     "random-useragent": "^0.5.0",
-    "scr-proto": "git+ssh://git@github.com/nnqq/scr-proto#v1.7.2",
+    "scr-proto": "github:nnqq/scr-proto#v1.7.2",
     "wappalyzer": "^6.3.8"
   },
   "devDependencies": {
