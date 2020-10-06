@@ -1,9 +1,12 @@
 FROM node:12-alpine AS build
-ARG GH_CI_TOKEN=$GH_CI_TOKEN
+ARG PRIVATE_SSH=$PRIVATE_SSH
 WORKDIR /app
 COPY / /app
-RUN apk add --no-cache git
-RUN git config --global url."https://nnqq:$GH_CI_TOKEN@github.com/".insteadOf "ssh://git@github.com/"
+RUN apk add --no-cache git openssh-client
+RUN mkdir -p -m 0600 /root/.ssh
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN echo $PRIVATE_SSH >> /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/id_rsa
 RUN npm i --only=production
 
 RUN GRPC_HEALTH_PROBE_VERSION=v0.3.2 && \
