@@ -14,18 +14,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      - uses: webfactory/ssh-agent@v0.2.0
-        with:
-          ssh-private-key: ${{ secrets.PRIVATE_SSH }}
-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-
-      - name: Install dependencies
-        run: npm i --only=production --ignore-scripts
-
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
@@ -34,6 +22,7 @@ jobs:
           registry: ghcr.io
           repository: ${{ github.repository }}
           tag_with_ref: true
+          build_args: PRIVATE_SSH=${{ secrets.PRIVATE_SSH }}
 
       - name: Extract service name
         uses: bluwy/substitute-string-action@v1
