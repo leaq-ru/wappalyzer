@@ -1,5 +1,4 @@
 .idea
-node_modules
 .eslintrc.js
 *.md
 .github
