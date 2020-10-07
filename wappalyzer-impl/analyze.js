@@ -5,7 +5,7 @@ const waManager = require('../wa-manager');
 
 module.exports = async (call, cb) => {
   try {
-    await promisify(dns.lookup)(call.request.url);
+    await promisify(dns.lookup)(new URL(call.request.url).hostname);
 
     const site = await waManager.get().open(call.request.url, {});
     const results = await site.analyze();
