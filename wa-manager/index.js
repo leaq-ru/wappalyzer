@@ -10,7 +10,7 @@ module.exports = {
       debug: false,
       delay: 500,
       headers: {},
-      maxDepth: 3,
+      maxDepth: 1,
       maxUrls: 3,
       maxWait: 5000,
       recursive: true,
