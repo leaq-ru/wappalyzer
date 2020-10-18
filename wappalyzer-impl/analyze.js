@@ -5,6 +5,12 @@ const waManager = require('../wa-manager');
 
 module.exports = async (call, cb) => {
   try {
+    setTimeout(() => {
+      const e = new Error('timeout 10s callback');
+      logger.error(e);
+      cb(e, null);
+    }, 10000);
+
     await promisify(dns.lookup)(new URL(call.request.url).hostname);
 
     const site = await waManager.get().open(call.request.url, {});
