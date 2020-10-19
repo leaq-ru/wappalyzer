@@ -8,12 +8,12 @@ module.exports = {
   async start() {
     const options = {
       debug: false,
-      delay: 500,
+      delay: 100,
       headers: {},
       maxDepth: 1,
       maxUrls: 3,
       maxWait: 5000,
-      recursive: true,
+      recursive: false,
       probe: true,
       userAgent: randomUseragent.getRandom(),
       htmlMaxCols: 2000,
