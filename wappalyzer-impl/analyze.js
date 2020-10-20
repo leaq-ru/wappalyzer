@@ -7,8 +7,9 @@ const logger = require('../logger');
 module.exports = async (call, cb) => {
   let wa;
   try {
-    setTimeout(() => {
+    setTimeout(async () => {
       const e = new Error('timeout 10s callback');
+      await wa.destroy();
       logger.error(e);
       cb(e, null);
     }, 10000);
@@ -33,10 +34,6 @@ module.exports = async (call, cb) => {
     await wa.init();
 
     const site = await wa.open(call.request.url, {});
-    site.on('error', (e) => {
-      logger.error(e);
-      cb(e, null);
-    });
 
     const results = await site.analyze();
 
