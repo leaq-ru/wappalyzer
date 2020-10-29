@@ -5,6 +5,8 @@ const Wappalyzer = require('wappalyzer');
 const logger = require('../logger');
 
 module.exports = async (call, cb) => {
+  logger.debug('got url to analyze, url=', call.request.url);
+
   let wa;
   try {
     setTimeout(async () => {
