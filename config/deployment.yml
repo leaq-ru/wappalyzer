@@ -27,12 +27,6 @@ spec:
           command:
             - node
             - /app/server.js
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - sleep
-                  - 5s
           livenessProbe:
             exec:
               command:
