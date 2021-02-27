@@ -9,13 +9,6 @@ module.exports = async (call, cb) => {
 
   let wa;
   try {
-    setTimeout(async () => {
-      const e = new Error('timeout 10s callback');
-      await wa.destroy();
-      logger.error(e);
-      cb(e, null);
-    }, 10000);
-
     await promisify(dns.lookup)(new URL(call.request.url).hostname);
 
     const options = {
