@@ -7,7 +7,6 @@ const logger = require('../logger');
 module.exports = async (call, cb) => {
   logger.debug('got url to analyze, url=', call.request.url);
 
-  let wa;
   try {
     await promisify(dns.lookup)(new URL(call.request.url).hostname);
 
@@ -25,18 +24,22 @@ module.exports = async (call, cb) => {
       htmlMaxRows: 2000,
     };
 
-    wa = new Wappalyzer(options);
-    await wa.init();
+    let wa;
+    let results;
+    try {
+      wa = new Wappalyzer(options);
+      await wa.init();
+  
+      const site = await wa.open(call.request.url, {});
+  
+      results = await site.analyze();
+    } finally {
+      await wa.destroy();
+    }
 
-    const site = await wa.open(call.request.url, {});
-
-    const results = await site.analyze();
-
-    cb(null, results);
+    cb(null, results || {});
   } catch (e) {
     logger.error(e);
     cb(e, null);
-  } finally {
-    await wa.destroy();
   }
 };
