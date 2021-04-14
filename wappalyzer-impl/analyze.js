@@ -29,9 +29,9 @@ module.exports = async (call, cb) => {
     try {
       wa = new Wappalyzer(options);
       await wa.init();
-  
+
       const site = await wa.open(call.request.url, {});
-  
+
       results = await site.analyze();
     } finally {
       await wa.destroy();
