@@ -16,8 +16,6 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.2 && \
 FROM node:12-alpine
 WORKDIR /app
 COPY --from=build /app /app
-ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
-RUN chmod +x /tini
 RUN npm rebuild
 RUN apk add --no-cache \
     chromium \
@@ -28,7 +26,8 @@ RUN apk add --no-cache \
     ca-certificates \
     ttf-freefont \
     nodejs \
-    yarn
+    yarn \
+    tini
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-ENTRYPOINT ["/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
