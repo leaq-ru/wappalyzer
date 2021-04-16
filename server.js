@@ -8,7 +8,9 @@ const logger = require('./logger');
 const server = new grpc.Server();
 
 const sd = () => {
-  server.tryShutdown(() => {});
+  server.tryShutdown(() => {
+    process.exit(0);
+  });
 };
 
 setTimeout(() => sd, 3 * 60 * 60 * 1000);
