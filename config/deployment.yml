@@ -129,7 +129,6 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: wappalyzer-restart
-  namespace: <YOUR NAMESPACE>
 spec:
   concurrencyPolicy: Forbid
   schedule: "0 */3 * * *"
