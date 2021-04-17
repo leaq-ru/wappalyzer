@@ -90,3 +90,62 @@ spec:
       protocol: TCP
   selector:
     app: wappalyzer
+
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: wappalyzer-restart
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: wappalyzer-restart
+rules:
+  - apiGroups:
+      - "apps"
+      - "extensions"
+    resources:
+      - "deployments"
+    resourceNames:
+      - "wappalyzer"
+    verbs:
+      - "get"
+      - "patch"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: wappalyzer-restart
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: wappalyzer-restart
+subjects:
+  - kind: ServiceAccount
+    name: wappalyzer-restart
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: wappalyzer-restart
+  namespace: <YOUR NAMESPACE>
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 */3 * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: wappalyzer-restart
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl
+              command:
+                - "kubectl"
+                - "rollout"
+                - "restart"
+                - "deploy/wappalyzer"
