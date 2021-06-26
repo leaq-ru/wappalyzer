@@ -43,8 +43,8 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "1"
-              memory: 1Gi
+              cpu: "500"
+              memory: 400Mi
             limits:
               cpu: "1"
               memory: 1Gi
