@@ -6,7 +6,7 @@ const logger = require('../logger');
 
 const lookup = promisify(dns.lookup);
 
-export default async (url) => {
+module.exports = async (url) => {
   try {
     logger.debug('got url to analyze, url=', url);
 
