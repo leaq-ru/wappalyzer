@@ -54,6 +54,26 @@ spec:
                 configMapKeyRef:
                   key: port
                   name: grpc
+            - name: STAN_CLUSTERID
+              valueFrom:
+                configMapKeyRef:
+                  key: clusterid
+                  name: stan
+            - name: NATS_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: url
+                  name: nats
+            - name: STAN_SUBJECTCOMPANYNEW
+              valueFrom:
+                configMapKeyRef:
+                  key: subjectcompanynew
+                  name: stan
+            - name: STAN_SUBJECTANALYZERESULT
+              valueFrom:
+                configMapKeyRef:
+                  key: subjectanalyzeresult
+                  name: stan
             - name: LOGLEVEL
               value: error
 
