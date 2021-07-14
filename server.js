@@ -43,18 +43,23 @@ function subscribe() {
   const opts = sc.subscriptionOptions();
   opts.setMaxInFlight(1);
   opts.setDurableName(config.stan.subjectCompanyNew);
+  opts.setManualAckMode(true);
 
   const sub = sc.subscribe(config.stan.subjectCompanyNew, config.serviceName, opts);
 
   sub.on('message', async (m) => {
-    const { companyId, url } = JSON.parse(m.getData());
+    try {
+      const { companyId, url } = JSON.parse(m.getData());
 
-    const result = await analyze(url);
+      const result = await analyze(url);
 
-    sc.publish(config.stan.subjectAnalyzeResult, JSON.stringify({
-      companyId,
-      result,
-    }));
+      sc.publish(config.stan.subjectAnalyzeResult, JSON.stringify({
+        companyId,
+        result,
+      }));
+    } finally {
+      m.ack();
+    }
   });
 
   sub.on('closed', subscribe);

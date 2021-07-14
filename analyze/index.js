@@ -8,7 +8,7 @@ const lookup = promisify(dns.lookup);
 
 module.exports = async (url) => {
   try {
-    logger.debug('got url to analyze, url=', url);
+    logger.debug(`got url to analyze, url=${url}`);
 
     await lookup(new URL(url).hostname);
 
