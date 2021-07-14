@@ -20,6 +20,7 @@ const sd = () => {
   });
 };
 
+process.setMaxListeners(0);
 process.on('SIGTERM', sd);
 process.on('uncaughtException', (e) => {
   logger.error('uncaughtException', e);
