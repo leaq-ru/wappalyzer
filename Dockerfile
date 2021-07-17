@@ -1,6 +1,7 @@
 FROM node:14-alpine AS build
 WORKDIR /app
 COPY / /app
+RUN apk add --no-cache git openssh-client
 RUN npm i --only=production
 
 RUN GRPC_HEALTH_PROBE_VERSION=v0.3.2 && \
